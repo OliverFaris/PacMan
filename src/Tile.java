@@ -25,7 +25,15 @@ public class Tile {
         return col;
     }
 
-    public void setWall(boolean wall) {
-        isWall = wall;
+    public boolean isPowerPellet() {
+        return isPowerPellet;
+    }
+
+    public boolean isPelletVisible() {
+        return isPelletVisible;
+    }
+
+    public void setPelletVisible(boolean pelletVisible) {
+        isPelletVisible = pelletVisible;
     }
 }
