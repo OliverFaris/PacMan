@@ -1,3 +1,6 @@
 public class Ghost {
-    private boolean isDrunk;
+    private int phase;
+    private int dx, dy;
+    private Tile currentTile;
+    private Tile targetTile;
 }

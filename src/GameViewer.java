@@ -1,10 +1,10 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferStrategy;
 
 public class GameViewer extends JFrame {
     private Game game;
     private final int TITLE_BAR_HEIGHT = 23;
-    private Image pacMan;
     private Image mazeImage;
 
     // 29 x 32
@@ -21,23 +21,39 @@ public class GameViewer extends JFrame {
         this.setTitle("Pac Man");
         this.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         this.setVisible(true);
+        createBufferStrategy(2);
     }
 
     public void paint(Graphics g) {
+        BufferStrategy bf = this.getBufferStrategy();
+        if (bf == null)
+            return;
+        Graphics g2 = null;
+        try {
+            g2 = bf.getDrawGraphics();
+            myPaint(g2);
+        }
+        finally {
+            g2.dispose();
+        }
+        bf.show();
+        Toolkit.getDefaultToolkit().sync();
+    }
+
+
+    public void myPaint(Graphics g) {
         g.drawImage(mazeImage, 0, 23,this);
         for (int i = 0; i < game.getMaze().length; i++) {
             for (int j = 0; j < game.getMaze()[i].length; j++) {
                 g.setColor(Color.BLACK);
                 g.drawRect(game.getMaze()[i][j].getCol() * 32, TITLE_BAR_HEIGHT + game.getMaze()[i][j].getRow() * 32, 32, 32);
-                if(game.getMaze()[i][j].isPowerPellet()) {
-                    g.setColor(Color.YELLOW);
-                    g.fillOval(5 + game.getMaze()[i][j].getCol() * 32, 5 + TITLE_BAR_HEIGHT + game.getMaze()[i][j].getRow() * 32, 22, 22);
-                }
-                else if(game.getMaze()[i][j].isPelletVisible()) {
-                    g.setColor(Color.YELLOW);
-                    g.fillOval(10 + game.getMaze()[i][j].getCol() * 32, 10 + TITLE_BAR_HEIGHT + game.getMaze()[i][j].getRow() * 32, 12, 12);
-                }
+                game.getMaze()[i][j].draw(g);
             }
         }
+        game.getPlayer().draw(g);
+//        g.setColor(Color.RED);
+//        g.fillRect(game.getPlayer().getTileCol() *32, game.getPlayer().getTileRow() *32 +23, 32, 32);
+//        g.setColor(Color.YELLOW);
+//        g.fillRect(game.getPlayer().getX(), game.getPlayer().getY(), 32,32);
     }
 }
