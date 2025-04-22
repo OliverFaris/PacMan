@@ -50,10 +50,11 @@ public class GameViewer extends JFrame {
                 game.getMaze()[i][j].draw(g);
             }
         }
-        game.getPlayer().draw(g);
 //        g.setColor(Color.RED);
 //        g.fillRect(game.getPlayer().getTileCol() *32, game.getPlayer().getTileRow() *32 +23, 32, 32);
 //        g.setColor(Color.YELLOW);
 //        g.fillRect(game.getPlayer().getX(), game.getPlayer().getY(), 32,32);
+        game.getPlayer().drawPacman(g);
+        game.getTestGhost().drawGhost(g);
     }
 }

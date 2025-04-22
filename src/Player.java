@@ -24,9 +24,8 @@ public class Player {
         this.tileRow = 23;
         this.tileCol = 14;
         this.nextDirection = 'x';
-        this.currentSprite = null;
-        // 14 x 32
-        this.x = 448;
+        // 14 x 32 - 16
+        this.x = 432;
         // 23 x 32 + 23
         this.y = 759;
         this.screen = screen;
@@ -36,6 +35,7 @@ public class Player {
         this.uPacman = new ImageIcon("Resources/uPacman.png").getImage();
         this.lPacman = new ImageIcon("Resources/lPacman.png").getImage();
         this.dPacman = new ImageIcon("Resources/dPacman.png").getImage();
+        this.currentSprite = lPacman;
     }
 
     public void move() {
@@ -101,12 +101,12 @@ public class Player {
 
     public void checkPortal(Tile[][] maze) {
         if (tileCol == 1 && dx < 0 && x % 32 < BUFFER_PIXELS) {
-            // 26*32
-            x = 832;
-            tileCol = 27;
+            // 26*32 -32
+            x = 800;
+            tileCol = 26;
         }
         else if(tileCol == 26 && dx > 0 && x % 32 < BUFFER_PIXELS) {
-            x = 0;
+            x = 32;
             tileCol = 1;
         }
     }
@@ -123,7 +123,7 @@ public class Player {
         }
     }
 
-    public void draw(Graphics g) {
+    public void drawPacman(Graphics g) {
         g.drawImage(currentSprite, x -8, y -8, screen);
     }
 
