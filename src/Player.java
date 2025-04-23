@@ -8,13 +8,13 @@ public class Player {
     private int x, y;
     private int tileRow, tileCol;
     private char nextDirection;
-    private Image currentSprite;
+    private Image[] currentSprites;
     private final int SPEED = 10;
     private final int BUFFER_PIXELS = 10;
     private GameViewer screen;
     private int frameCounter;
 
-    private Image rPacman, uPacman, lPacman, dPacman;
+    private Image[] rPacmans, uPacmans, lPacmans, dPacmans;
 
     public Player(GameViewer screen) {
         this.lives = 3;
@@ -31,11 +31,11 @@ public class Player {
         this.screen = screen;
         this.frameCounter = 0;
 
-        this.rPacman = new ImageIcon("Resources/rPacman.png").getImage();
-        this.uPacman = new ImageIcon("Resources/uPacman.png").getImage();
-        this.lPacman = new ImageIcon("Resources/lPacman.png").getImage();
-        this.dPacman = new ImageIcon("Resources/dPacman.png").getImage();
-        this.currentSprite = lPacman;
+        this.rPacmans = new Image[] {new ImageIcon("Resources/rOpenPacman.png").getImage(), new ImageIcon("Resources/rPacman.png").getImage()};
+        this.uPacmans = new Image[] {new ImageIcon("Resources/uOpenPacman.png").getImage(), new ImageIcon("Resources/uPacman.png").getImage()};
+        this.lPacmans = new Image[] {new ImageIcon("Resources/lOpenPacman.png").getImage(), new ImageIcon("Resources/lPacman.png").getImage()};
+        this.dPacmans = new Image[] {new ImageIcon("Resources/dOpenPacman.png").getImage(), new ImageIcon("Resources/dPacman.png").getImage()};
+        this.currentSprites = new Image[] {null, null, new ImageIcon("Resources/fullPacman.png").getImage()};
     }
 
     public void move() {
@@ -51,21 +51,12 @@ public class Player {
     public void checkWallCollision(Tile[][] maze) {
         // Going right or left, is there a wall in front of pacman?
         if ((dx > 0 && maze[tileRow][tileCol +1].getIsWall() || dx < 0 && maze[tileRow][tileCol -1].getIsWall()) && x % 32 <BUFFER_PIXELS) {
-            if (dx > 0)
-                currentSprite = rPacman;
-            else
-                currentSprite = lPacman;
             // Align to grid and stop movement
             x = tileCol *32;
             dx = 0;
         }
         // Going up or down, is there a wall in front of pacman?
         else if ((dy < 0 && maze[tileRow -1][tileCol].getIsWall() || dy > 0 && maze[tileRow +1][tileCol].getIsWall()) && (y -23) % 32 <BUFFER_PIXELS) {
-            // Align to grid and stop movement
-            if (dy > 0)
-                currentSprite = dPacman;
-            else
-                currentSprite = uPacman;
             y = tileRow *32 +23;
             dy = 0;
         }
@@ -79,22 +70,22 @@ public class Player {
                 y = tileRow *32 +23;
                 dx = SPEED;
                 dy = 0;
-                currentSprite = rPacman;
+                replaceImage(rPacmans);
             } else if (nextDirection == 'l' && !maze[tileRow][tileCol - 1].getIsWall()) {
                 y = tileRow *32 +23;
                 dx = -SPEED;
                 dy = 0;
-                currentSprite = lPacman;
+                replaceImage(lPacmans);
             } else if (nextDirection == 'u' && !maze[tileRow - 1][tileCol].getIsWall()) {
                 x = tileCol *32;
                 dx = 0;
                 dy = -SPEED;
-                currentSprite = uPacman;
+                replaceImage(uPacmans);
             } else if (nextDirection == 'd' && !maze[tileRow + 1][tileCol].getIsWall()) {
                 x = tileCol *32;
                 dx = 0;
                 dy = SPEED;
-                currentSprite = dPacman;
+                replaceImage(dPacmans);
             }
         }
     }
@@ -123,8 +114,18 @@ public class Player {
         }
     }
 
+    public void replaceImage(Image[] arrReplaced) {
+        for (int i = 0; i < currentSprites.length -1; i++) {
+            currentSprites[i] = arrReplaced[i];
+        }
+    }
+
     public void drawPacman(Graphics g) {
-        g.drawImage(currentSprite, x -8, y -8, screen);
+        frameCounter++;
+        Image currentImage = currentSprites[(frameCounter) % 3];
+        if (dx == 0 && dy == 0)
+            currentImage = currentSprites[2];
+        g.drawImage(currentImage, x -8, y -8, screen);
     }
 
     public void setDx(int dx) {
