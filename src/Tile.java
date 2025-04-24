@@ -10,6 +10,7 @@ public class Tile {
     private GameViewer screen;
     private Image pelletImage;
     private Image powerPelletImage;
+    private int frameCounter;
 
     public Tile(int row, int col, boolean isWall, boolean isPelletVisible, boolean isPowerPellet, GameViewer screen) {
         this.row = row;
@@ -20,6 +21,7 @@ public class Tile {
         this.screen = screen;
         this.pelletImage = new ImageIcon("Resources/pellet2.png").getImage();
         this.powerPelletImage = new ImageIcon("Resources/powerPellet2.png").getImage();
+        this.frameCounter = 0;
     }
 
     public boolean getIsWall() {
@@ -47,13 +49,13 @@ public class Tile {
     }
 
     public void draw(Graphics g) {
+        frameCounter++;
         if(isPowerPellet && isPelletVisible) {
-            g.drawImage(powerPelletImage, col * 32 ,23+ row*32, screen);
-//            g.fillOval(5 + col * 32, 5 + 23 + row * 32, 22, 22);
+            if ((frameCounter/6)%2 ==0)
+                g.drawImage(powerPelletImage, col * 32 ,23+ row*32, screen);
         }
         else if(isPelletVisible) {
             g.drawImage(pelletImage, col * 32 ,23+ row*32, screen);
-//            g.fillOval(10 + col * 32, 10 + 23 + row * 32, 12, 12);
         }
     }
 }

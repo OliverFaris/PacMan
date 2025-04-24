@@ -9,8 +9,8 @@ public class Player {
     private int tileRow, tileCol;
     private char nextDirection;
     private Image[] currentSprites;
-    private final int SPEED = 10;
-    private final int BUFFER_PIXELS = 10;
+    private final int SPEED = 12;
+    private final int BUFFER_PIXELS = 12;
     private GameViewer screen;
     private int frameCounter;
 
