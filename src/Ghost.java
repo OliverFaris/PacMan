@@ -8,7 +8,6 @@ public class Ghost {
     private int x, y;
     private int tileRow, tileCol;
     private int targetRow, targetCol;
-    private Image currentSprite;
     private final int SPEED = 10;
     private final int BUFFER_PIXELS = 10;
     private GameViewer screen;
@@ -39,6 +38,20 @@ public class Ghost {
         this.y += dy;
     }
 
+    public void findTarget(Player player) {
+        targetCol = player.getTileCol();
+        targetRow = player.getTileRow();
+    }
+
+    public void moveToTarget() {
+        if (!directions.isEmpty()) {
+            for (Character direction : directions) {
+                // For every direction do this calculation:
+                // | maze[tileRow][tileCol +1] - targetCol |
+            }
+        }
+    }
+
     public void canTurn(Tile[][] maze) {
         if (dx >= 0 && !maze[tileRow][tileCol + 1].getIsWall() && (y - 23) % 32 < BUFFER_PIXELS) {
             directions.add('r');
@@ -52,6 +65,9 @@ public class Ghost {
         if (dy >= 0 && !maze[tileRow + 1][tileCol].getIsWall() && x % 32 < BUFFER_PIXELS) {
             directions.add('d');
         }
+    }
+
+    public void frightend() {
         if (!directions.isEmpty()) {
             int index = (int) (Math.random() * directions.size());
             switch (directions.get(index)) {

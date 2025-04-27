@@ -31,11 +31,11 @@ public class Player {
         this.screen = screen;
         this.frameCounter = 0;
 
-        this.rPacmans = new Image[] {new ImageIcon("Resources/rOpenPacman.png").getImage(), new ImageIcon("Resources/rPacman.png").getImage()};
-        this.uPacmans = new Image[] {new ImageIcon("Resources/uOpenPacman.png").getImage(), new ImageIcon("Resources/uPacman.png").getImage()};
-        this.lPacmans = new Image[] {new ImageIcon("Resources/lOpenPacman.png").getImage(), new ImageIcon("Resources/lPacman.png").getImage()};
-        this.dPacmans = new Image[] {new ImageIcon("Resources/dOpenPacman.png").getImage(), new ImageIcon("Resources/dPacman.png").getImage()};
-        this.currentSprites = new Image[] {null, null, new ImageIcon("Resources/fullPacman.png").getImage()};
+        this.rPacmans = new Image[] {new ImageIcon("Resources/Pacmans/rOpenPacman.png").getImage(), new ImageIcon("Resources/Pacmans/rPacman.png").getImage()};
+        this.uPacmans = new Image[] {new ImageIcon("Resources/Pacmans/uOpenPacman.png").getImage(), new ImageIcon("Resources/Pacmans/uPacman.png").getImage()};
+        this.lPacmans = new Image[] {new ImageIcon("Resources/Pacmans/lOpenPacman.png").getImage(), new ImageIcon("Resources/Pacmans/lPacman.png").getImage()};
+        this.dPacmans = new Image[] {new ImageIcon("Resources/Pacmans/dOpenPacman.png").getImage(), new ImageIcon("Resources/Pacmans/dPacman.png").getImage()};
+        this.currentSprites = new Image[] {null, null, new ImageIcon("Resources/Pacmans/fullPacman.png").getImage()};
     }
 
     public void move() {
@@ -65,7 +65,7 @@ public class Player {
     public void checkTurn(Tile[][] maze) {
         // You can only turn when aligned
         // Or you don't need to be aligned when doing a 180
-        if(x % 32 < BUFFER_PIXELS && (y-23) % 32 < BUFFER_PIXELS || (dx != 0 && nextDirection == 'r' || nextDirection == 'l') || (dy != 0 && nextDirection == 'u' || nextDirection == 'd')) {
+        if(x % 32 < BUFFER_PIXELS && (y-23) % 32 < BUFFER_PIXELS || (nextDirection == 'r' || nextDirection == 'l') || (nextDirection == 'u' || nextDirection == 'd')) {
             if (nextDirection == 'r' && !maze[tileRow][tileCol + 1].getIsWall()) {
                 y = tileRow *32 +23;
                 dx = SPEED;
