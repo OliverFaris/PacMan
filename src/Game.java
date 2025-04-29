@@ -121,7 +121,7 @@ public class Game implements KeyListener, ActionListener {
         player.move();
         testGhost.findRowCol();
         testGhost.canTurn(maze);
-        testGhost.frightend();
+        testGhost.moveToTarget(maze);
         testGhost.checkPortal(maze);
         testGhost.move();
         window.repaint();

@@ -43,13 +43,22 @@ public class Ghost {
         targetRow = player.getTileRow();
     }
 
-    public void moveToTarget() {
-        if (!directions.isEmpty()) {
-            for (Character direction : directions) {
-                // For every direction do this calculation:
-                // | maze[tileRow][tileCol +1] - targetCol |
-            }
+    public void moveToTarget(Tile[][] maze) {
+        ArrayList<Double> potentialDirection = new ArrayList<>();
+        if (maze[tileRow][tileCol +1].getIsWall())
+            potentialDirection.add(Math.sqrt(Math.pow(targetCol - (tileCol+1), 2) + Math.pow(targetRow - tileRow, 2)));
+        if (maze[tileRow][tileCol -1].getIsWall())
+            potentialDirection.add(Math.sqrt(Math.pow(targetCol - (tileCol-1), 2) + Math.pow(targetRow - tileRow, 2)));
+        if (maze[tileRow -1][tileCol].getIsWall())
+            potentialDirection.add(Math.sqrt(Math.pow(targetCol - tileCol, 2) + Math.pow(targetRow - (tileRow -1), 2)));
+        if (maze[tileRow +1][tileCol].getIsWall())
+            potentialDirection.add(Math.sqrt(Math.pow(targetCol - tileCol, 2) + Math.pow(targetRow - (tileRow +1), 2)));
+        double smallest = Integer.MAX_VALUE;
+        for (Double dir : potentialDirection) {
+            if (smallest < dir)
+                smallest = dir;
         }
+
     }
 
     public void canTurn(Tile[][] maze) {
