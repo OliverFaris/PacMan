@@ -16,12 +16,13 @@ public class Game implements KeyListener, ActionListener {
     private Player player;
     private Ghost testGhost;
     private static final int SLEEP_TIME = 41;
+    // Ghosts
 
     public Game() {
         window = new GameViewer(this);
         maze = new Tile[MAZE_HEIGHT][MAZE_WIDTH];
         this.player = new Player(window);
-        this.testGhost = new Ghost(window);
+//        this.testGhost = new Ghost(window);
 
         window.addKeyListener(this);
     }
@@ -113,18 +114,8 @@ public class Game implements KeyListener, ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        player.findRowCol();
-        player.checkTurn(maze);
-        player.checkWallCollision(maze);
-        player.checkPortal(maze);
-        player.eatPellet(maze);
-        player.move();
-        testGhost.findRowCol();
-        testGhost.findTarget(player);
-        testGhost.canTurn(maze);
-        testGhost.chase(maze);
-        testGhost.checkPortal(maze);
-        testGhost.move();
+        player.move(maze);
+        testGhost.move(maze, player);
         window.repaint();
     }
 }

@@ -46,14 +46,12 @@ public class GameViewer extends JFrame {
         for (int i = 0; i < game.getMaze().length; i++) {
             for (int j = 0; j < game.getMaze()[i].length; j++) {
                 g.setColor(Color.BLACK);
-                g.drawRect(game.getMaze()[i][j].getCol() * 32, TITLE_BAR_HEIGHT + game.getMaze()[i][j].getRow() * 32, 32, 32);
+//                g.drawRect(game.getMaze()[i][j].getCol() * 32, TITLE_BAR_HEIGHT + game.getMaze()[i][j].getRow() * 32, 32, 32);
                 game.getMaze()[i][j].draw(g);
             }
         }
 //        g.setColor(Color.RED);
 //        g.fillRect(game.getPlayer().getTileCol() *32, game.getPlayer().getTileRow() *32 +23, 32, 32);
-//        g.setColor(Color.YELLOW);
-//        g.fillRect(game.getPlayer().getX(), game.getPlayer().getY(), 32,32);
         game.getPlayer().drawPacman(g);
         game.getTestGhost().drawGhost(g);
     }

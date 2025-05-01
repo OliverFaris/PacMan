@@ -38,7 +38,12 @@ public class Player {
         this.currentSprites = new Image[] {null, null, new ImageIcon("Resources/Pacmans/fullPacman.png").getImage()};
     }
 
-    public void move() {
+    public void move(Tile[][] maze) {
+        findRowCol();
+        checkTurn(maze);
+        checkWallCollision(maze);
+        checkPortal(maze);
+        eatPellet(maze);
         x += dx;
         y += dy;
     }
