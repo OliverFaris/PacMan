@@ -120,8 +120,9 @@ public class Game implements KeyListener, ActionListener {
         player.eatPellet(maze);
         player.move();
         testGhost.findRowCol();
+        testGhost.findTarget(player);
         testGhost.canTurn(maze);
-        testGhost.moveToTarget(maze);
+        testGhost.chase(maze);
         testGhost.checkPortal(maze);
         testGhost.move();
         window.repaint();

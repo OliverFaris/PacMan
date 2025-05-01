@@ -11,6 +11,7 @@ public class Tile {
     private Image pelletImage;
     private Image powerPelletImage;
     private int frameCounter;
+    private char relativeDir;
 
     public Tile(int row, int col, boolean isWall, boolean isPelletVisible, boolean isPowerPellet, GameViewer screen) {
         this.row = row;
@@ -22,6 +23,12 @@ public class Tile {
         this.pelletImage = new ImageIcon("Resources/pellet2.png").getImage();
         this.powerPelletImage = new ImageIcon("Resources/powerPellet2.png").getImage();
         this.frameCounter = 0;
+    }
+
+    public Tile(int row, int col, char relativeDir) {
+        this.row = row;
+        this.col = col;
+        this.relativeDir = relativeDir;
     }
 
     public boolean getIsWall() {
@@ -46,6 +53,10 @@ public class Tile {
 
     public void setPelletVisible(boolean pelletVisible) {
         isPelletVisible = pelletVisible;
+    }
+
+    public char getRelativeDir() {
+        return relativeDir;
     }
 
     public void draw(Graphics g) {

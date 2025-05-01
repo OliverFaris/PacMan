@@ -1,5 +1,4 @@
 import java.awt.*;
-import java.sql.Array;
 import java.util.ArrayList;
 
 public class Ghost {
@@ -11,7 +10,7 @@ public class Ghost {
     private final int SPEED = 10;
     private final int BUFFER_PIXELS = 10;
     private GameViewer screen;
-    private ArrayList<Character> directions;
+    private ArrayList<Tile> directions;
 
     public Ghost(GameViewer screen) {
         this.tileCol = 14;
@@ -43,43 +42,67 @@ public class Ghost {
         targetRow = player.getTileRow();
     }
 
-    public void moveToTarget(Tile[][] maze) {
-        ArrayList<Double> potentialDirection = new ArrayList<>();
-        if (maze[tileRow][tileCol +1].getIsWall())
-            potentialDirection.add(Math.sqrt(Math.pow(targetCol - (tileCol+1), 2) + Math.pow(targetRow - tileRow, 2)));
-        if (maze[tileRow][tileCol -1].getIsWall())
-            potentialDirection.add(Math.sqrt(Math.pow(targetCol - (tileCol-1), 2) + Math.pow(targetRow - tileRow, 2)));
-        if (maze[tileRow -1][tileCol].getIsWall())
-            potentialDirection.add(Math.sqrt(Math.pow(targetCol - tileCol, 2) + Math.pow(targetRow - (tileRow -1), 2)));
-        if (maze[tileRow +1][tileCol].getIsWall())
-            potentialDirection.add(Math.sqrt(Math.pow(targetCol - tileCol, 2) + Math.pow(targetRow - (tileRow +1), 2)));
+    public void chase(Tile[][] maze) {
         double smallest = Integer.MAX_VALUE;
-        for (Double dir : potentialDirection) {
-            if (smallest < dir)
-                smallest = dir;
+        double distance =0;
+        Tile optimalTile = null;
+        for (int i=0; i < directions.size(); i++) {
+            distance = Math.sqrt(Math.pow(targetCol - directions.get(i).getCol(), 2) + Math.pow(targetRow - directions.get(i).getRow(), 2));
+            if (distance < smallest) {
+                smallest = distance;
+                optimalTile = directions.get(i);
+            }
         }
-
+        directions.clear();
+        if (optimalTile != null) {
+            switch (optimalTile.getRelativeDir()) {
+                case 'r':
+                    y = tileRow * 32 + 23;
+                    dx = SPEED;
+                    dy = 0;
+                    break;
+                case 'l':
+                    y = tileRow * 32 + 23;
+                    dx = -SPEED;
+                    dy = 0;
+                    break;
+                case 'u':
+                    x = tileCol * 32;
+                    dx = 0;
+                    dy = -SPEED;
+                    break;
+                case 'd':
+                    x = tileCol * 32;
+                    dx = 0;
+                    dy = SPEED;
+                    break;
+            }
+        }
     }
 
     public void canTurn(Tile[][] maze) {
-        if (dx >= 0 && !maze[tileRow][tileCol + 1].getIsWall() && (y - 23) % 32 < BUFFER_PIXELS) {
-            directions.add('r');
-        }
-        if (dx <= 0 && !maze[tileRow][tileCol - 1].getIsWall() && (y - 23) % 32 < BUFFER_PIXELS) {
-            directions.add('l');
-        }
+        // Up
         if (dy <= 0 && !maze[tileRow - 1][tileCol].getIsWall() && x % 32 < BUFFER_PIXELS) {
-            directions.add('u');
+            directions.add(new Tile(tileRow -1, tileCol, 'u'));
         }
+        // Left
+        if (dx <= 0 && !maze[tileRow][tileCol - 1].getIsWall() && (y - 23) % 32 < BUFFER_PIXELS) {
+            directions.add(new Tile(tileRow, tileCol -1, 'l'));
+        }
+        // Down
         if (dy >= 0 && !maze[tileRow + 1][tileCol].getIsWall() && x % 32 < BUFFER_PIXELS) {
-            directions.add('d');
+            directions.add(new Tile(tileRow +1, tileCol, 'd'));
+        }
+        // Right
+        if (dx >= 0 && !maze[tileRow][tileCol + 1].getIsWall() && (y - 23) % 32 < BUFFER_PIXELS) {
+            directions.add(new Tile(tileRow, tileCol +1, 'r'));
         }
     }
 
     public void frightend() {
         if (!directions.isEmpty()) {
             int index = (int) (Math.random() * directions.size());
-            switch (directions.get(index)) {
+            switch (directions.get(index).getRelativeDir()) {
                 case 'r':
                     y = tileRow * 32 + 23;
                     dx = SPEED;
