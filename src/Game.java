@@ -14,9 +14,10 @@ public class Game implements KeyListener, ActionListener {
     private final int MAZE_WIDTH = 28;
     private final int MAZE_HEIGHT = 31;
     private Player player;
-    private Ghost testGhost;
     private static final int SLEEP_TIME = 41;
     // Ghosts
+
+    private Ghost[] ghosts = {new Blinky(window), new Pinky(window), new Inky(window), new Clyde(window)};
 
     public Game() {
         window = new GameViewer(this);
@@ -35,8 +36,8 @@ public class Game implements KeyListener, ActionListener {
         return maze;
     }
 
-    public Ghost getTestGhost() {
-        return testGhost;
+    public Ghost[] getGhosts() {
+        return ghosts;
     }
 
     public void gameLoop() {
@@ -115,7 +116,9 @@ public class Game implements KeyListener, ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         player.move(maze);
-        testGhost.move(maze, player);
         window.repaint();
+
+        ghosts[3].move(maze, player);
+        ghosts[0].move(maze, player);
     }
 }

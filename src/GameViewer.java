@@ -53,6 +53,7 @@ public class GameViewer extends JFrame {
 //        g.setColor(Color.RED);
 //        g.fillRect(game.getPlayer().getTileCol() *32, game.getPlayer().getTileRow() *32 +23, 32, 32);
         game.getPlayer().drawPacman(g);
-        game.getTestGhost().drawGhost(g);
+        game.getGhosts()[3].drawGhost(g);
+        game.getGhosts()[0].drawGhost(g);
     }
 }

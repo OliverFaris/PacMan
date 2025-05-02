@@ -49,13 +49,7 @@ public abstract class Ghost {
         return player.getTileRow() == tileRow && player.getTileCol() == tileCol;
     }
 
-    public void findTarget(Player player) {
-        targetCol = player.getTileCol();
-        targetRow = player.getTileRow();
-
-//        targetCol = player.getTileCol() + (player.getDx()/2);
-//        targetRow = player.getTileRow() + (player.getDy()/2);
-    }
+    public abstract void findTarget(Player player);
 
     public void chooseDir(char direction) {
         switch (direction) {
@@ -138,10 +132,5 @@ public abstract class Ghost {
         }
     }
 
-    public void drawGhost(Graphics g) {
-//        g.setColor(Color.GREEN);
-//        g.fillRect(targetCol*32, targetRow*32 +23, 32,32);
-        g.setColor(Color.RED);
-        g.fillRect(x, y, 32, 32);
-    }
+    public abstract void drawGhost(Graphics g);
 }
