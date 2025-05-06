@@ -17,13 +17,14 @@ public class Game implements KeyListener, ActionListener {
     private static final int SLEEP_TIME = 41;
     // Ghosts
 
-    private Ghost[] ghosts = {new Blinky(window), new Pinky(window), new Inky(window), new Clyde(window)};
+    private Ghost[] ghosts;
 
     public Game() {
         window = new GameViewer(this);
         maze = new Tile[MAZE_HEIGHT][MAZE_WIDTH];
         this.player = new Player(window);
-//        this.testGhost = new Ghost(window);
+
+        this.ghosts = new Ghost[]{new Blinky(window), new Pinky(window), new Inky(window), new Clyde(window)};
 
         window.addKeyListener(this);
     }
@@ -116,9 +117,9 @@ public class Game implements KeyListener, ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         player.move(maze);
-        window.repaint();
-
-        ghosts[3].move(maze, player);
         ghosts[0].move(maze, player);
+        ghosts[1].move(maze, player);
+        ghosts[3].move(maze, player);
+        window.repaint();
     }
 }

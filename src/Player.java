@@ -9,10 +9,11 @@ public class Player {
     private int tileRow, tileCol;
     private char nextDirection;
     private Image[] currentSprites;
-    private final int SPEED = 12;
-    private final int BUFFER_PIXELS = 12;
+    private final int SPEED = 11;
+    private final int BUFFER_PIXELS = 11;
     private GameViewer screen;
     private int frameCounter;
+    private boolean isSuperPacman;
 
     private Image[] rPacmans, uPacmans, lPacmans, dPacmans;
 
@@ -30,6 +31,7 @@ public class Player {
         this.y = 759;
         this.screen = screen;
         this.frameCounter = 0;
+        this.isSuperPacman = false;
 
         this.rPacmans = new Image[] {new ImageIcon("Resources/Pacmans/rOpenPacman.png").getImage(), new ImageIcon("Resources/Pacmans/rPacman.png").getImage()};
         this.uPacmans = new Image[] {new ImageIcon("Resources/Pacmans/uOpenPacman.png").getImage(), new ImageIcon("Resources/Pacmans/uPacman.png").getImage()};
@@ -111,12 +113,22 @@ public class Player {
         Tile currentTile = maze[tileRow][tileCol];
         if (currentTile.isPelletVisible()) {
             // Player gets 50 points for a power pellet and only 10 points for a normal pellet
-            if(currentTile.isPowerPellet())
-                points+= 40;
+            if(currentTile.isPowerPellet()) {
+                points += 40;
+                isSuperPacman = true;
+            }
             points+= 10;
             // Make pellet invisible
             currentTile.setPelletVisible(false);
         }
+    }
+
+    public boolean isSuperPacman() {
+        return isSuperPacman;
+    }
+
+    public void setSuperPacman(boolean superPacman) {
+        isSuperPacman = superPacman;
     }
 
     public void replaceImage(Image[] arrReplaced) {

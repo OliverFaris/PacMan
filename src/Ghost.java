@@ -2,22 +2,47 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public abstract class Ghost {
-    protected int phase;
+    // Movement and position
     protected int dx, dy;
     protected int x, y;
     protected int tileRow, tileCol;
     protected int targetRow, targetCol;
-    protected final int SPEED = 12;
-    protected final int BUFFER_PIXELS = 12;
-    protected GameViewer screen;
+    protected int dir;
+
     protected ArrayList<Tile> directions;
+    protected int frameCounter;
+    protected int framesPast;
+
+    // Phases
+    protected int phase;
+    protected int lastPhase;
+    protected final int SCATTER = 0;
+    protected final int CHASE = 1;
+    protected final int FRIGHTENED = 2;
+    protected final int RIGHT = 2;
+    protected final int LEFT = 1;
+    protected final int UP = 3;
+    protected final int DOWN = 0;
+
+    // Constants
+    protected final int SPEED = 10;
+    protected final int BUFFER_PIXELS = 10;
+
+    // Screen
+    protected GameViewer screen;
 
     public Ghost(GameViewer screen) {
         this.tileCol = 14;
         this.tileRow = 11;
         this.dy = 0;
         this.dx = SPEED;
+        this.dir = RIGHT;
+
         this.directions = new ArrayList<>();
+        this.phase = SCATTER;
+        this.lastPhase = -1;
+        this.frameCounter = 0;
+        this.framesPast = 0;
 
         // 14 * 32
         this.x = 448;
@@ -33,8 +58,35 @@ public abstract class Ghost {
     }
 
     public void move(Tile[][] maze, Player player) {
+        frameCounter++;
+        framesPast++;
         findRowCol();
+        if (phase == SCATTER && ((frameCounter - 168) % 816 == 0 || (frameCounter <= 648 && (frameCounter -168) % 480 == 0))) {
+            phase = CHASE;
+            System.out.println("chase! Frames: " + frameCounter);
+        }
+        else if (phase == CHASE && ((frameCounter - 480) % 648 == 0 || (frameCounter <= 168 && frameCounter - 168 == 0)) && frameCounter < 2112) {
+            phase = SCATTER;
+            System.out.println("scatter! Frames: " + frameCounter);
+        }
         findTarget(player);
+//        if (player.isSuperPacman()) {
+//            if (framesPast == 0)
+//                lastPhase = phase;
+//            framesPast++;
+//            phase = FRIGHTENED;
+//            frightend();
+//            System.out.println(framesPast);
+//            if (framesPast > 192) {
+//                player.setSuperPacman(false);
+//                phase = lastPhase;
+//                framesPast = 0;
+//            }
+//
+//        }
+//        else
+//            findTarget(player);
+
         canTurn(maze);
         chase(maze);
         checkPortal(maze);
@@ -57,21 +109,25 @@ public abstract class Ghost {
                 y = tileRow * 32 + 23;
                 dx = SPEED;
                 dy = 0;
+                dir = RIGHT;
                 break;
             case 'l':
                 y = tileRow * 32 + 23;
                 dx = -SPEED;
                 dy = 0;
+                dir = LEFT;
                 break;
             case 'u':
                 x = tileCol * 32;
                 dx = 0;
                 dy = -SPEED;
+                dir = UP;
                 break;
             case 'd':
                 x = tileCol * 32;
                 dx = 0;
                 dy = SPEED;
+                dir = DOWN;
                 break;
         }
     }
