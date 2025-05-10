@@ -9,12 +9,16 @@ import java.util.Scanner;
 
 public class Game implements KeyListener, ActionListener {
     private GameViewer window;
-    private int GamePhase;
+    private int gamePhase;
     private Tile[][] maze;
     private final int MAZE_WIDTH = 28;
     private final int MAZE_HEIGHT = 31;
     private Player player;
     private static final int SLEEP_TIME = 41;
+    private final int BLINKY = 0;
+    private final int PINKY = 1;
+    private final int INKY = 2;
+    private final int CLYDE = 3;
     // Ghosts
 
     private Ghost[] ghosts;
@@ -23,6 +27,7 @@ public class Game implements KeyListener, ActionListener {
         window = new GameViewer(this);
         maze = new Tile[MAZE_HEIGHT][MAZE_WIDTH];
         this.player = new Player(window);
+        this.gamePhase = 0;
 
         this.ghosts = new Ghost[]{new Blinky(window), new Pinky(window), new Inky(window), new Clyde(window)};
 
@@ -92,21 +97,28 @@ public class Game implements KeyListener, ActionListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        switch(e.getKeyCode()) {
-            case KeyEvent.VK_UP:
-                player.setNextDirection('u');
-                break;
-            case KeyEvent.VK_RIGHT:
-                player.setNextDirection('r');
-                break;
-            case KeyEvent.VK_DOWN:
-                player.setNextDirection('d');
-                break;
-            case KeyEvent.VK_LEFT:
-                player.setNextDirection('l');
-                break;
+
+        if (gamePhase != 3) {
+            switch(e.getKeyCode()) {
+                case KeyEvent.VK_UP, KeyEvent.VK_W:
+                    player.setNextDirection('u');
+                    gamePhase = 1;
+                    break;
+                case KeyEvent.VK_RIGHT, KeyEvent.VK_D:
+                    player.setNextDirection('r');
+                    gamePhase = 1;
+                    break;
+                case KeyEvent.VK_DOWN, KeyEvent.VK_S:
+                    player.setNextDirection('d');
+                    gamePhase = 1;
+                    break;
+                case KeyEvent.VK_LEFT, KeyEvent.VK_A:
+                    player.setNextDirection('l');
+                    gamePhase = 1;
+                    break;
+            }
+            window.repaint();
         }
-        window.repaint();
     }
 
     @Override
@@ -116,10 +128,26 @@ public class Game implements KeyListener, ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        player.move(maze);
-        ghosts[0].move(maze, player);
-        ghosts[1].move(maze, player);
-        ghosts[3].move(maze, player);
-        window.repaint();
+        if (player.getPoints() == 2620) {
+            gamePhase = 3;
+        }
+        if(Ghost.didGhostCollide) {
+            player.minusLife();
+            System.out.println(player.getLives());
+            gamePhase = 0;
+            for (Ghost ghost : ghosts) {
+                ghost.reset();
+                player.reset();
+            }
+            window.repaint();
+        }
+        if (gamePhase == 1 && player.getLives() > 0) {
+            player.move(maze);
+            ghosts[BLINKY].move(maze, player);
+            ghosts[PINKY].move(maze, player);
+            ghosts[INKY].move(maze, player);
+            ghosts[CLYDE].move(maze, player);
+            window.repaint();
+        }
     }
 }

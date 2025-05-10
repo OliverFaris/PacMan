@@ -40,6 +40,17 @@ public class Player {
         this.currentSprites = new Image[] {null, null, new ImageIcon("Resources/Pacmans/fullPacman.png").getImage()};
     }
 
+    public void reset() {
+        dx = 0;
+        dy = 0;
+        tileRow = 23;
+        tileCol = 14;
+        nextDirection = 'x';
+        x = 432;
+        y = 759;
+        isSuperPacman = false;
+    }
+
     public void move(Tile[][] maze) {
         findRowCol();
         checkTurn(maze);
@@ -145,28 +156,12 @@ public class Player {
         g.drawImage(currentImage, x -8, y -8, screen);
     }
 
-    public void setDx(int dx) {
-        this.dx = dx;
-    }
-
-    public void setDy(int dy) {
-        this.dy = dy;
-    }
-
     public int getDy() {
         return dy;
     }
 
     public int getDx() {
         return dx;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
     }
 
     public int getTileRow() {
@@ -177,15 +172,19 @@ public class Player {
         return tileCol;
     }
 
-    public char getNextDirection() {
-        return nextDirection;
-    }
-
     public void setNextDirection(char nextDirection) {
         this.nextDirection = nextDirection;
     }
 
     public int getPoints() {
         return points;
+    }
+
+    public int getLives() {
+        return lives;
+    }
+
+    public void minusLife() {
+        this.lives--;
     }
 }

@@ -1,8 +1,17 @@
+import javax.swing.*;
 import java.awt.*;
 
 public class Clyde extends Ghost{
+    private Image[][] clydeSprites;
     public Clyde(GameViewer screen) {
         super(screen);
+
+        clydeSprites = new Image[][] {
+                {new ImageIcon("Resources/Clyde/d0clyde.png").getImage(), new ImageIcon("Resources/Clyde/d1clyde.png").getImage()},
+                {new ImageIcon("Resources/Clyde/l0clyde.png").getImage(), new ImageIcon("Resources/Clyde/l1clyde.png").getImage()},
+                {new ImageIcon("Resources/Clyde/r0clyde.png").getImage(), new ImageIcon("Resources/Clyde/r1clyde.png").getImage()},
+                {new ImageIcon("Resources/Clyde/u0clyde.png").getImage(), new ImageIcon("Resources/Clyde/u1clyde.png").getImage()}
+        };
     }
 
     @Override
@@ -22,12 +31,12 @@ public class Clyde extends Ghost{
     @Override
     public void drawGhost(Graphics g) {
         if (phase != FRIGHTENED) {
-            g.setColor(Color.ORANGE);
-            g.fillRect(x, y, 32, 32);
+//            g.setColor(Color.ORANGE);
+//            g.fillRect(x, y, 32, 32);
+            g.drawImage(clydeSprites[dir][(frameCounter/8) % 2], x -9, y -9, 50, 50, screen);
         }
         else {
-            g.setColor(Color.BLUE);
-            g.fillRect(x, y, 32, 32);
+            g.drawImage(frightenedSprites[(frameCounter/8) % 2], x -9, y -9, 50, 50, screen);
         }
     }
 }

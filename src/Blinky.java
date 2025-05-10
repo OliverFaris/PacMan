@@ -31,11 +31,10 @@ public class Blinky extends Ghost{
         if (phase != FRIGHTENED) {
 //            g.setColor(Color.RED);
 //            g.fillRect(x, y, 32, 32);
-            g.drawImage(blinkySprites[dir][(frameCounter/10) % 2], x -8, y -8, screen);
+            g.drawImage(blinkySprites[dir][(frameCounter/8) % 2], x -9, y -9, 50, 50, screen);
         }
         else {
-            g.setColor(Color.BLUE);
-            g.fillRect(x, y, 32, 32);
+            g.drawImage(frightenedSprites[(frameCounter/8) % 2], x -9, y -9, 50, 50, screen);
         }
     }
 }
