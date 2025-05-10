@@ -97,8 +97,9 @@ public class Game implements KeyListener, ActionListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-
+        // Player can only use arrow keys when they haven't won yet
         if (gamePhase != 3) {
+            // Sets the next direction for pac man because pac man can "pre-move"
             switch(e.getKeyCode()) {
                 case KeyEvent.VK_UP, KeyEvent.VK_W:
                     player.setNextDirection('u');
@@ -128,9 +129,11 @@ public class Game implements KeyListener, ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        // Player wins
         if (player.getPoints() == 2620) {
             gamePhase = 3;
         }
+        // Handles ghost collision
         if(Ghost.didGhostCollide) {
             player.minusLife();
             System.out.println(player.getLives());
@@ -141,6 +144,7 @@ public class Game implements KeyListener, ActionListener {
             }
             window.repaint();
         }
+        // Normal movement
         if (gamePhase == 1 && player.getLives() > 0) {
             player.move(maze);
             ghosts[BLINKY].move(maze, player);

@@ -14,6 +14,7 @@ public class Inky extends Ghost{
     }
 
     @Override
+    // Target is 4 tiles behind pacman
     public void findTarget(Player player) {
         if (phase == CHASE) {
             if (player.getDx() != 0) {
@@ -33,10 +34,9 @@ public class Inky extends Ghost{
     }
 
     @Override
+    // Animates and draws ghost based on what phase they are in
     public void drawGhost(Graphics g) {
         if (phase != FRIGHTENED) {
-//            g.setColor(Color.RED);
-//            g.fillRect(x, y, 32, 32);
             g.drawImage(inkySprites[dir][(frameCounter/8) % 2], x -9, y -9, 50, 50, screen);
         }
         else {

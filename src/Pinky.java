@@ -14,6 +14,7 @@ public class Pinky extends Ghost{
     }
 
     @Override
+    // Target is 4 tiles ahead of pac man
     public void findTarget(Player player) {
         if (phase == CHASE) {
             if (player.getDx() != 0) {
@@ -33,12 +34,9 @@ public class Pinky extends Ghost{
     }
 
     @Override
+    // Animates and draws ghost based on what phase they are in
     public void drawGhost(Graphics g) {
         if (phase != FRIGHTENED) {
-//            g.setColor(Color.BLUE);
-//        g.fillRect(targetCol * 32, targetRow * 32 + 23, 32, 32);
-//            g.setColor(Color.PINK);
-//            g.fillRect(x, y, 32, 32);
             g.drawImage(pinkySprites[dir][(frameCounter/8) % 2], x -9, y -9, 50, 50, screen);
         }
         else {

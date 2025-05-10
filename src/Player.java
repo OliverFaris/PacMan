@@ -40,6 +40,7 @@ public class Player {
         this.currentSprites = new Image[] {null, null, new ImageIcon("Resources/Pacmans/fullPacman.png").getImage()};
     }
 
+    // Resets the players position when life is lost
     public void reset() {
         dx = 0;
         dy = 0;
@@ -51,6 +52,7 @@ public class Player {
         isSuperPacman = false;
     }
 
+    // Moves pac man
     public void move(Tile[][] maze) {
         findRowCol();
         checkTurn(maze);
@@ -107,7 +109,7 @@ public class Player {
             }
         }
     }
-
+    // Checks if pac man is using the portal
     public void checkPortal(Tile[][] maze) {
         if (tileCol == 1 && dx < 0 && x % 32 < BUFFER_PIXELS) {
             // 26*32 -32
@@ -147,7 +149,7 @@ public class Player {
             currentSprites[i] = arrReplaced[i];
         }
     }
-
+    // Draws pac man based on the direction he is facing
     public void drawPacman(Graphics g) {
         frameCounter++;
         Image currentImage = currentSprites[(frameCounter) % 3];

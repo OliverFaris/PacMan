@@ -42,19 +42,18 @@ public class GameViewer extends JFrame {
 
 
     public void myPaint(Graphics g) {
+        // Draw maze and pellets
         g.drawImage(mazeImage, 0, 23,this);
         for (int i = 0; i < game.getMaze().length; i++) {
             for (int j = 0; j < game.getMaze()[i].length; j++) {
-                g.setColor(Color.BLACK);
-//                g.drawRect(game.getMaze()[i][j].getCol() * 32, TITLE_BAR_HEIGHT + game.getMaze()[i][j].getRow() * 32, 32, 32);
                 game.getMaze()[i][j].draw(g);
             }
         }
-        game.getGhosts()[3].drawGhost(g);
-        game.getGhosts()[2].drawGhost(g);
-        game.getGhosts()[1].drawGhost(g);
-        game.getGhosts()[0].drawGhost(g);
-
+        // Draw ghosts
+        for (Ghost ghost : game.getGhosts()) {
+            ghost.drawGhost(g);
+        }
+        // Draw player
         game.getPlayer().drawPacman(g);
     }
 }

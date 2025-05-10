@@ -15,6 +15,7 @@ public class Clyde extends Ghost{
     }
 
     @Override
+    // Target is right on pac man until it is 8 tiles away
     public void findTarget(Player player) {
         int distanceToPlayer = (int) Math.sqrt(Math.pow(player.getTileCol()- tileCol, 2) + Math.pow(player.getTileRow() - tileRow, 2));
         if (phase == CHASE && distanceToPlayer > 8){
@@ -29,10 +30,9 @@ public class Clyde extends Ghost{
     }
 
     @Override
+    // Animates and draws ghost based on what phase they are in
     public void drawGhost(Graphics g) {
         if (phase != FRIGHTENED) {
-//            g.setColor(Color.ORANGE);
-//            g.fillRect(x, y, 32, 32);
             g.drawImage(clydeSprites[dir][(frameCounter/8) % 2], x -9, y -9, 50, 50, screen);
         }
         else {

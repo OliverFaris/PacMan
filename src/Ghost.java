@@ -62,6 +62,7 @@ public abstract class Ghost {
         this.frightenedSprites = new Image[] {new ImageIcon("Resources/0frightened.png").getImage(), new ImageIcon("Resources/1frightened.png").getImage()};
     }
 
+    // Resets ghost motion after pac man loses a life
     public void reset() {
         tileCol = 14;
         tileRow = 11;
@@ -86,6 +87,7 @@ public abstract class Ghost {
     public void move(Tile[][] maze, Player player) {
         findRowCol();
         canTurn(maze);
+        // If pac man ate a power pellet make ghosts turn frightened
         if (player.isSuperPacman()) {
             if (frightenedFrames == 0) {
                 lastPhase = phase;
@@ -98,11 +100,13 @@ public abstract class Ghost {
             }
             frightend();
             frightenedFrames++;
+            // Once 8 seconds have passed the ghosts are normal again
             if (frightenedFrames > 192) {
                 player.setSuperPacman(false);
                 phase = lastPhase;
             }
         }
+        // Handles normal movement
         else {
             findTarget(player);
             chase(maze);
@@ -111,6 +115,8 @@ public abstract class Ghost {
             bufferPixels = 10;
             isFrightened = false;
             frightenedFrames = 0;
+            // The ghosts chase for 20 seconds with 7 second scatter periods in between
+            // The scatter periods only occur 4 times before the ghost chase pac man forever
             if (phase == SCATTER && (frameCounter == 168 || frameCounter == 816 || frameCounter == 1464 || frameCounter == 2112)) {
                 phase = CHASE;
                 dx *= -1;
@@ -136,6 +142,7 @@ public abstract class Ghost {
 
     public abstract void findTarget(Player player);
 
+    // Corrects position and velocity based on the direction given
     public void chooseDir(char direction) {
         switch (direction) {
             case 'r':
@@ -165,6 +172,7 @@ public abstract class Ghost {
         }
     }
 
+    // Decides if the ghost can turn
     public void canTurn(Tile[][] maze) {
         // Up
         if (dy <= 0 && !maze[tileRow - 1][tileCol].getIsWall() && x % 32 < bufferPixels) {
@@ -184,6 +192,7 @@ public abstract class Ghost {
         }
     }
 
+    // Determines which tile will minimize the distance to their target tile
     public void chase(Tile[][] maze) {
         double smallest = Integer.MAX_VALUE;
         double distance =0;
@@ -201,6 +210,7 @@ public abstract class Ghost {
         }
     }
 
+    // Chooses random directions
     public void frightend() {
         if (!directions.isEmpty()) {
             int index = (int) (Math.random() * directions.size());
@@ -209,6 +219,7 @@ public abstract class Ghost {
         }
     }
 
+    // Checks if a ghost is going through a portal
     public void checkPortal(Tile[][] maze) {
         if (tileCol == 1 && dx < 0 && x % 32 < bufferPixels) {
             // 26*32 -32

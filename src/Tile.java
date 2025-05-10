@@ -59,8 +59,10 @@ public class Tile {
         return relativeDir;
     }
 
+    // Draws a tile
     public void draw(Graphics g) {
         frameCounter++;
+        // Animate power pellet
         if(isPowerPellet && isPelletVisible) {
             if ((frameCounter/6)%2 ==0)
                 g.drawImage(powerPelletImage, col * 32 ,23+ row*32, screen);

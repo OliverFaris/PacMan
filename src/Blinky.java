@@ -15,6 +15,7 @@ public class Blinky extends Ghost{
     }
 
     @Override
+    // Target is right on pacman
     public void findTarget(Player player) {
         if (phase == CHASE) {
             targetCol = player.getTileCol();
@@ -28,9 +29,8 @@ public class Blinky extends Ghost{
 
     @Override
     public void drawGhost(Graphics g) {
+        // Animates and draws ghost based on what phase they are in
         if (phase != FRIGHTENED) {
-//            g.setColor(Color.RED);
-//            g.fillRect(x, y, 32, 32);
             g.drawImage(blinkySprites[dir][(frameCounter/8) % 2], x -9, y -9, 50, 50, screen);
         }
         else {
